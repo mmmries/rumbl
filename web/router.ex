@@ -16,6 +16,8 @@ defmodule Rumbl.Router do
   scope "/", Rumbl do
     pipe_through :browser # Use the default browser stack
 
+    get "/gol", GameOfLifeController, :show
+    post "/gol", GameOfLifeController, :next_generation
     get "/users", UserController, :index
     get "/users/:id", UserController, :show
     get "/", PageController, :index

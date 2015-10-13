@@ -1,0 +1,20 @@
+<h1>Game Of Life</h1>
+
+<form method="POST">
+  <input type="hidden" name="_csrf_token" value="<%= get_csrf_token %>" />
+  <table class="gol">
+    <%= for row <- (1..30) do %>
+      <tr>
+        <%= for column <- (1..30) do %>
+          <td><input type="checkbox"
+                     name="<%= row %>,<%= column %>"
+                     value="1"
+                     <%= checked?(@board["#{row},#{column}"]) %> /></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+
+  <br/><br/>
+  <input type="submit" />
+</form>
