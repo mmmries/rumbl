@@ -10,4 +10,8 @@ defmodule Rumbl.GameOfLifeTest do
   test "it generates an empty board" do
     assert generate({3,3}) == [[0,0,0],[0,0,0],[0,0,0]]
   end
+
+  test "it calculates the next generation" do
+    assert next_generation([[0,1,1],[1,1,0],[1,1,1]]) == [[1,1,1],[0,0,0],[1,0,1]]
+  end
 end
