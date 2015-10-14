@@ -7,6 +7,7 @@ defmodule Rumbl.GameOfLifeController do
   end
 
   def next_generation(conn, params) do
-    render conn, "show.html", board: parse_params(params, {30,30})
+    next_board = parse_params(params, {30,30}) |> next_generation
+    render conn, "show.html", board: next_board
   end
 end
