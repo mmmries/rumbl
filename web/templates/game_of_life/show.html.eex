@@ -3,13 +3,13 @@
 <form method="POST">
   <input type="hidden" name="_csrf_token" value="<%= get_csrf_token %>" />
   <table class="gol">
-    <%= for row <- (1..30) do %>
+    <%= for {columns,row} <- Enum.with_index(@board) do %>
       <tr>
-        <%= for column <- (1..30) do %>
+        <%= for {value, column} <- Enum.with_index(columns) do %>
           <td><input type="checkbox"
-                     name="<%= row %>,<%= column %>"
+                     name="<%= row + 1 %>,<%= column + 1 %>"
                      value="1"
-                     <%= checked?(@board["#{row},#{column}"]) %> /></td>
+                     <%= checked?(value) %> /></td>
         <% end %>
       </tr>
     <% end %>
