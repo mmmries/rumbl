@@ -20,9 +20,9 @@ defmodule Rumbl.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
 
-      #alias Rumbl.Repo
-      #import Ecto.Model
-      #import Ecto.Query, only: [from: 2]
+      alias Rumbl.Repo
+      import Ecto.Model
+      import Ecto.Query, only: [from: 2]
 
       import Rumbl.Router.Helpers
 
@@ -33,7 +33,7 @@ defmodule Rumbl.ConnCase do
 
   setup tags do
     unless tags[:async] do
-      #Ecto.Adapters.SQL.restart_test_transaction(Rumbl.Repo, [])
+      Ecto.Adapters.SQL.restart_test_transaction(Rumbl.Repo, [])
     end
 
     :ok
