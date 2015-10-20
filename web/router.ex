@@ -18,9 +18,7 @@ defmodule Rumbl.Router do
 
     get "/gol", GameOfLifeController, :show
     post "/gol", GameOfLifeController, :next_generation
-    get "/users", UserController, :index
-    get "/users/:id", UserController, :show
-    get "/", PageController, :index
+    resources "/users", UserController
   end
 
   # Other scopes may use custom stacks.
