@@ -28,4 +28,13 @@ defmodule Rumbl.UserController do
       render conn, "new.html", changeset: changeset
     end
   end
+
+  def delete(conn, %{"id" => id}) do
+    to_delete = %User{id: String.to_integer(id)}
+    user = Repo.delete!(to_delete)
+
+    conn
+    |> put_flash(:info, "#{user.name} deleted!")
+    |> redirect(to: user_path(conn, :index))
+  end
 end
