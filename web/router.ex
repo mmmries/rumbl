@@ -1,5 +1,6 @@
 defmodule Rumbl.Router do
   use Rumbl.Web, :router
+  import Rumbl.Auth, only: [authenticate_user: 2]
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -23,6 +24,12 @@ defmodule Rumbl.Router do
 
     get "/gol", GameOfLifeController, :show
     post "/gol", GameOfLifeController, :next_generation
+  end
+
+  scope "/manage", Rumbl do
+    pipe_through [:browser, :authenticate_user]
+
+    resources "/videos", VideoController
   end
 
   # Other scopes may use custom stacks.
