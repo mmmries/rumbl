@@ -1,10 +1,28 @@
-<h1>Listing Users</h1>
-<h3 style="float: right"><a href="/users/new">Add New User</a></h3>
+<h2>Listing Users</h2>
+
 <table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Username</th>
+      <th>Email</th>
+
+      <th></th>
+    </tr>
+  </thead>
+
   <%= for user <- @users do %>
     <tr>
-      <td><%= render "user.html", user: user %></td>
-      <td><%= link "View", to: user_path(@conn, :show, user.id) %></td>
+      <td><%= user.name %></td>
+      <td><%= user.username %></td>
+      <td><%= user.email %></td>
+      <td class="text-right">
+        <%= link "Show", to: user_path(@conn, :show, user), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: user_path(@conn, :edit, user), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
     </tr>
   <% end %>
 </table>
+
+<%= link "New User", to: user_path(@conn, :new) %>
