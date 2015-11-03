@@ -22,5 +22,9 @@ defmodule Rumbl.Video do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> update_change(:url, &String.downcase/1)
+    |> update_change(:url, &String.strip/1)
+    |> validate_length(:title, min: 5, max: 255)
+    |> validate_length(:description, min: 0, max: 4096)
   end
 end
