@@ -20,6 +20,7 @@ defmodule Rumbl.Router do
 
     get "/", PageController, :index
     resources "/sessions", SessionController, only: [:new, :create, :delete]
+    resources "/users", UserController
 
     get "/gol", GameOfLifeController, :show
     post "/gol", GameOfLifeController, :next_generation
@@ -29,7 +30,6 @@ defmodule Rumbl.Router do
     pipe_through [:browser, :authenticate_user]
 
     resources "/videos", VideoController
-    resources "/users", UserController
   end
 
   # Other scopes may use custom stacks.
