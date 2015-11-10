@@ -18,7 +18,7 @@ defmodule Rumbl.VideoController do
     changeset = user
     |> Ecto.Model.build(:videos)
     |> Video.changeset(:empty)
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: changeset, categories: categories)
   end
 
   def create(conn, %{"video" => video_params}, user) do
@@ -32,7 +32,7 @@ defmodule Rumbl.VideoController do
         |> put_flash(:info, "Video created successfully.")
         |> redirect(to: video_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", changeset: changeset, categories: categories)
     end
   end
 
@@ -44,7 +44,7 @@ defmodule Rumbl.VideoController do
   def edit(conn, %{"id" => id}, user) do
     video = Repo.get!(user_videos(user), id)
     changeset = Video.changeset(video)
-    render(conn, "edit.html", video: video, changeset: changeset)
+    render(conn, "edit.html", video: video, changeset: changeset, categories: categories)
   end
 
   def update(conn, %{"id" => id, "video" => video_params}, user) do
@@ -57,7 +57,7 @@ defmodule Rumbl.VideoController do
         |> put_flash(:info, "Video updated successfully.")
         |> redirect(to: video_path(conn, :show, video))
       {:error, changeset} ->
-        render(conn, "edit.html", video: video, changeset: changeset)
+        render(conn, "edit.html", video: video, changeset: changeset, categories: categories)
     end
   end
 
@@ -71,6 +71,10 @@ defmodule Rumbl.VideoController do
     conn
     |> put_flash(:info, "Video deleted successfully.")
     |> redirect(to: video_path(conn, :index))
+  end
+
+  defp categories do
+    Repo.all( from c in Rumbl.Category, select: {c.name, c.id} )
   end
 
   defp user_videos(user) do
