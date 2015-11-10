@@ -27,5 +27,6 @@ defmodule Rumbl.Video do
     |> update_change(:url, &String.strip/1)
     |> validate_length(:title, min: 5, max: 255)
     |> validate_length(:description, min: 0, max: 4096)
+    |> foreign_key_constraint(:category_id)
   end
 end

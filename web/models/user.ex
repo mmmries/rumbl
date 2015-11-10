@@ -20,6 +20,7 @@ defmodule Rumbl.User do
     |> update_change(:username, &String.downcase/1)
     |> update_change(:username, &String.strip/1)
     |> validate_length(:username, min: 1, max: 20)
+    |> unique_constraint(:username)
   end
 
   def registration_changeset(model, params \\ :empty) do
