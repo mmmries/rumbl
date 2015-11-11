@@ -1,3 +1,11 @@
 <h1>Showing User</h1>
 <%= render "user.html", user: @user %>
+<br />
 <%= link "Delete!", to: user_path(@conn, :delete, @user.id), method: :delete %>
+<br />
+<h3>Favorite Categories</h3>
+<ul>
+<%= for {category_name, count} <- @most_used_categories do %>
+  <li><%= category_name %> (<%= count %> videos)</li>
+<% end %>
+</ul>

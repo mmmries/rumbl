@@ -29,7 +29,8 @@ defmodule Rumbl.UserController do
 
   def show(conn, %{"id" => id}) do
     user = Repo.get(Rumbl.User, id)
-    render conn, "show.html", user: user
+    most_used_categories = Repo.all(most_used_categories_for_user(user))
+    render conn, "show.html", user: user, most_used_categories: most_used_categories
   end
 
   def edit(conn, %{"id" => id}) do
@@ -59,5 +60,15 @@ defmodule Rumbl.UserController do
     conn
     |> put_flash(:info, "#{user.name} deleted!")
     |> redirect(to: user_path(conn, :index))
+  end
+
+  defp most_used_categories_for_user(user) do
+    from u in User,
+      where: u.id == ^user.id,
+      join: v in assoc(u, :videos),
+      join: c in assoc(v, :category),
+      select: {c.name, count("*")},
+      group_by: c.name,
+      order_by: [desc: count("*")]
   end
 end
