@@ -16,6 +16,7 @@ defmodule Rumbl.VideoController do
   end
 
   def show(conn, %{"id" => id}, user) do
+    {id, _rest} = Integer.parse(id)
     video = Repo.get!(user_videos(user), id)
     render(conn, "show.html", video: video)
   end
@@ -44,12 +45,14 @@ defmodule Rumbl.VideoController do
   end
 
   def edit(conn, %{"id" => id}, user) do
+    {id, _rest} = Integer.parse(id)
     video = Repo.get!(user_videos(user), id)
     changeset = Video.changeset(video)
     render(conn, "edit.html", video: video, changeset: changeset, categories: all_categories)
   end
 
   def update(conn, %{"id" => id, "video" => video_params}, user) do
+    {id, _rest} = Integer.parse(id)
     video = Repo.get!(user_videos(user), id)
     changeset = Video.changeset(video, video_params)
 
@@ -64,6 +67,7 @@ defmodule Rumbl.VideoController do
   end
 
   def delete(conn, %{"id" => id}, user) do
+    {id, _rest} = Integer.parse(id)
     video = Repo.get!(user_videos(user), id)
     Repo.delete!(video)
 
