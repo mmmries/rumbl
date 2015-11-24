@@ -11,13 +11,30 @@ let Video = {
 
     socket.connect()
     let vidChannel = socket.channel("videos:" + videoId)
-    vidChannel.join().receive("ok", resp =>
-      console.log("joined the video channel", resp)
-    ).receive("error", reason =>
-      console.log("could not join video channel", reason)
-    )
 
-    vidChannel.on("ping", ({count: count}) => console.log("PING", count))
+    postButton.addEventListener("click", e => {
+      let payload = {body: msgInput.value, at: Player.getCurrentTime()}
+      vidChannel.push("new_annotation", payload)
+                .receive("error", e => console.log(e))
+      msgInput.value = ""
+    })
+
+    vidChannel.on("new_annotation", (resp) => {
+      this.renderAnnotation(msgContainer, resp)
+    })
+
+    vidChannel.join()
+      .receive("ok", resp => console.log("joined the video channel", resp))
+      .receive("error", reason => console.log("could not join video channel", reason))
+  },
+
+  renderAnnotation(msgContainer, {user, body, at}){
+    let template = document.createElement("div")
+    template.innerHTML = `
+    <b>${user.username}</b>: ${body}
+    `
+    msgContainer.appendChild(template)
+    msgContainer.scrollTop = msgContainer.scrollHeight
   }
 }
 export default Video
