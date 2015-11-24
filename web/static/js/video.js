@@ -11,7 +11,13 @@ let Video = {
 
     socket.connect()
     let vidChannel = socket.channel("videos:" + videoId)
-    // TODO join the video channel
+    vidChannel.join().receive("ok", resp =>
+      console.log("joined the video channel", resp)
+    ).receive("error", reason =>
+      console.log("could not join video channel", reason)
+    )
+
+    vidChannel.on("ping", ({count: count}) => console.log("PING", count))
   }
 }
 export default Video
