@@ -33,7 +33,7 @@ defmodule Rumbl.Mixfile do
     [
       {:comeonin, "~> 1.0"},
       {:cowboy, "~> 1.0"},
-      {:phoenix, "~> 1.0.3"},
+      {:phoenix, "~> 1.1"},
       {:phoenix_ecto, "~> 1.1"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.1"},
