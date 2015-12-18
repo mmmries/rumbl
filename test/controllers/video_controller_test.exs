@@ -46,4 +46,31 @@ defmodule Rumbl.VideoControllerTest do
     assert redirected_to(conn) == video_path(conn, :index)
     assert Repo.get_by!(Video, @valid_attrs).user_id == user.id
   end
+
+  @tag login_as: "max"
+  test "does not create a video and renders errors", %{conn: conn} do
+    conn = post conn, video_path(conn, :create), video: @invalid_attrs
+    assert html_response(conn, 200) =~ ~r/Oops, something went wrong! Please check the errors below/
+    assert html_response(conn, 200) =~ ~r/Url can&#39;t be blank/
+  end
+
+  @tag login_as: "max"
+  test "cannot show, edit, update, or delete another user's videos", %{user: owner, conn: conn} do
+    video = insert_video(owner, title: "cats afraid of cucumbers")
+    interloper = insert_user(username: "ted")
+    conn = assign(conn, :current_user, interloper)
+
+    assert_raise Ecto.NoResultsError, fn ->
+      get(conn, video_path(conn, :show, video))
+    end
+    assert_raise Ecto.NoResultsError, fn ->
+      get(conn, video_path(conn, :edit, video))
+    end
+    assert_raise Ecto.NoResultsError, fn ->
+      put(conn, video_path(conn, :show, video), video: @valid_attrs)
+    end
+    assert_raise Ecto.NoResultsError, fn ->
+      delete(conn, video_path(conn, :delete, video))
+    end
+  end
 end
